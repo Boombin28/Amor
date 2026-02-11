@@ -1,7 +1,9 @@
 ---
+import { withBasePath } from "../utils/withBase";
+
 const heading = "See the world, and be seen by the world.";
 const base = import.meta.env.BASE_URL;
-const withBase = (path) => `${base}${path.replace(/^\//, "")}`;
+const withBase = (path) => withBasePath(base, path);
 const homePath = withBase("/home");
 ---
 
