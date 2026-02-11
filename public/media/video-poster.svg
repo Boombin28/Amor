@@ -1,0 +1,8 @@
+<svg width="1400" height="788" viewBox="0 0 1400 788" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="788" fill="#14100D" />
+  <circle cx="260" cy="158" r="180" fill="#BC4B1F" fill-opacity="0.44" />
+  <circle cx="1170" cy="650" r="230" fill="#1F5B55" fill-opacity="0.32" />
+  <rect x="430" y="214" width="540" height="360" rx="24" fill="#F6E9D6" fill-opacity="0.2" stroke="#F5E0C3" stroke-width="2" />
+  <path d="M650 304L805 394L650 484V304Z" fill="#F9D4AF" />
+  <text x="80" y="710" fill="#F6E9D6" font-size="42" font-family="Avenir Next, Helvetica, Arial, sans-serif">Demo Reel Placeholder</text>
+</svg>

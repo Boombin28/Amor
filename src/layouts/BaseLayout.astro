@@ -1,0 +1,66 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const {
+  title,
+  description = "一个关于设计、艺术、哲学与文学的个人网站。",
+} = Astro.props;
+const base = import.meta.env.BASE_URL;
+const baseNoSlash = base === "/" ? "" : base.replace(/\/$/, "");
+const withBase = (path: string) => `${base}${path.replace(/^\//, "")}`;
+const pagePathRaw = Astro.url.pathname;
+const pagePath = baseNoSlash && pagePathRaw.startsWith(baseNoSlash)
+  ? pagePathRaw.slice(baseNoSlash.length) || "/"
+  : pagePathRaw;
+const isHome = pagePath === "/home" || pagePath === "/home/";
+const isWritings = pagePath.startsWith("/writings");
+const isMedia = pagePath === "/media" || pagePath === "/media/";
+const isAbout = pagePath === "/about" || pagePath === "/about/";
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>{title}</title>
+    <ViewTransitions />
+  </head>
+  <body>
+    <div class="site-shell">
+      <header class="site-header">
+        <a class="brand" href={withBase("/home")}>Amor's Journal</a>
+        <nav aria-label="Main navigation">
+          <a class={isHome ? "active" : ""} href={withBase("/home")}>Home</a>
+          <a class={isWritings ? "active" : ""} href={withBase("/writings")}>
+            Writings
+          </a>
+          <a class={isMedia ? "active" : ""} href={withBase("/media")}>Media</a>
+          <a class={isAbout ? "active" : ""} href={withBase("/about")}>About</a>
+        </nav>
+      </header>
+      <main class="site-main">
+        <slot />
+      </main>
+      <footer class="site-footer">
+        <p>© {new Date().getFullYear()} Amor's Journal</p>
+      </footer>
+    </div>
+  </body>
+</html>

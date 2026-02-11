@@ -1,0 +1,356 @@
+---
+const heading = "See the world, and be seen by the world.";
+const base = import.meta.env.BASE_URL;
+const withBase = (path) => `${base}${path.replace(/^\//, "")}`;
+const homePath = withBase("/home");
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Intro page for Amor's Journal" />
+    <link rel="icon" type="image/svg+xml" href={withBase("/favicon.svg")} />
+    <link rel="icon" href={withBase("/favicon.ico")} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="prefetch" href={homePath} />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <title>Amor's Journal · Intro</title>
+    <style>
+      :root {
+        --bg: #f5f0f0;
+        --ink: #141414;
+        --muted: #514f4f;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        min-height: 100vh;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Inter", "Avenir Next", "Helvetica Neue", sans-serif;
+      }
+
+      .intro-wrap {
+        position: fixed;
+        inset: 0;
+      }
+
+      #noise-canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+
+      .intro-content {
+        position: relative;
+        z-index: 1;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 1rem;
+      }
+
+      .intro-inner {
+        width: min(100%, 1120px);
+        text-align: center;
+      }
+
+      .intro-kicker {
+        margin: 0;
+        font-size: 0.78rem;
+        text-transform: uppercase;
+        letter-spacing: 0.16em;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin: 0.95rem auto 0;
+        max-width: 20ch;
+        font-family: "Playfair Display", "Times New Roman", serif;
+        font-size: clamp(2.4rem, 8vw, 7rem);
+        line-height: 1.02;
+        font-weight: 700;
+        text-wrap: balance;
+      }
+
+      .glitch {
+        position: relative;
+        display: inline-grid;
+        place-items: center;
+        filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.1));
+      }
+
+      .glitch > span {
+        grid-area: 1 / 1;
+      }
+
+      .glitch-main {
+        color: #f8f8f6;
+      }
+
+      .glitch-ghost {
+        color: #f8f8f6;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .glitch-ghost-cyan {
+        text-shadow: 3px 0 #00e8ff;
+      }
+
+      .glitch-ghost-red {
+        text-shadow: -3px 0 #ff2240;
+      }
+
+      .glitch.is-glitch .glitch-ghost {
+        opacity: 0.98;
+      }
+
+      .glitch.is-glitch .glitch-ghost-cyan {
+        animation: glitch-cyan 220ms steps(2, end) infinite;
+      }
+
+      .glitch.is-glitch .glitch-ghost-red {
+        animation: glitch-red 260ms steps(2, end) infinite;
+      }
+
+      @keyframes glitch-cyan {
+        0% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+        20% {
+          transform: translate(6px, -2px);
+          clip-path: inset(8% 0 62% 0);
+        }
+        45% {
+          transform: translate(-3px, 2px);
+          clip-path: inset(55% 0 20% 0);
+        }
+        70% {
+          transform: translate(5px, 1px);
+          clip-path: inset(25% 0 48% 0);
+        }
+        100% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @keyframes glitch-red {
+        0% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+        18% {
+          transform: translate(-6px, 1px);
+          clip-path: inset(62% 0 9% 0);
+        }
+        42% {
+          transform: translate(4px, -2px);
+          clip-path: inset(18% 0 56% 0);
+        }
+        73% {
+          transform: translate(-5px, -1px);
+          clip-path: inset(40% 0 36% 0);
+        }
+        100% {
+          transform: translate(0, 0);
+          clip-path: inset(0 0 0 0);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .glitch-ghost {
+          display: none;
+        }
+      }
+
+      .enter-link {
+        margin-top: 1.35rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        border: 1px solid rgba(20, 20, 20, 0.42);
+        border-radius: 999px;
+        padding: 0.66rem 1.55rem;
+        color: var(--ink);
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.11em;
+        transition: background-color 180ms ease, transform 180ms ease;
+      }
+
+      .enter-link:hover {
+        background: rgba(20, 20, 20, 0.08);
+        transform: translateY(-1px);
+      }
+    </style>
+  </head>
+  <body>
+    <section class="intro-wrap">
+      <canvas id="noise-canvas" aria-hidden="true"></canvas>
+      <div class="intro-content">
+        <div class="intro-inner">
+          <p class="intro-kicker">Amor's Journal</p>
+          <h1 class="glitch" id="glitch-title">
+            <span class="glitch-main">{heading}</span>
+            <span class="glitch-ghost glitch-ghost-cyan" aria-hidden="true">{heading}</span>
+            <span class="glitch-ghost glitch-ghost-red" aria-hidden="true">{heading}</span>
+          </h1>
+          <a class="enter-link" id="enter-link" href={homePath}>Enter</a>
+        </div>
+      </div>
+    </section>
+
+    <script is:inline>
+      const canvas = document.getElementById("noise-canvas");
+
+      if (canvas instanceof HTMLCanvasElement) {
+        const context = canvas.getContext("2d");
+
+        if (context) {
+          const config = {
+            patternSize: 250,
+            patternScaleX: 1,
+            patternScaleY: 1,
+            patternRefreshInterval: 2,
+            patternAlpha: 15,
+            canvasBg: "#f5f0f0",
+          };
+
+          const tile = document.createElement("canvas");
+          const tileContext = tile.getContext("2d");
+          tile.width = config.patternSize;
+          tile.height = config.patternSize;
+
+          let frame = 0;
+          let rafId = 0;
+
+          function resizeCanvas() {
+            const ratio = Math.max(window.devicePixelRatio || 1, 1);
+            canvas.width = Math.floor(window.innerWidth * ratio);
+            canvas.height = Math.floor(window.innerHeight * ratio);
+            canvas.style.width = `${window.innerWidth}px`;
+            canvas.style.height = `${window.innerHeight}px`;
+            context.setTransform(ratio, 0, 0, ratio, 0, 0);
+          }
+
+          function regenerateTile() {
+            if (!tileContext) return;
+            const imageData = tileContext.createImageData(config.patternSize, config.patternSize);
+            const data = imageData.data;
+
+            for (let i = 0; i < data.length; i += 4) {
+              const value = Math.random() * 255;
+              data[i] = value;
+              data[i + 1] = value;
+              data[i + 2] = value;
+              data[i + 3] = config.patternAlpha;
+            }
+
+            tileContext.putImageData(imageData, 0, 0);
+          }
+
+          function render() {
+            frame += 1;
+            if (frame % config.patternRefreshInterval === 0) {
+              regenerateTile();
+            }
+
+            context.clearRect(0, 0, window.innerWidth, window.innerHeight);
+            context.fillStyle = config.canvasBg;
+            context.fillRect(0, 0, window.innerWidth, window.innerHeight);
+
+            const pattern = context.createPattern(tile, "repeat");
+            if (pattern) {
+              context.save();
+              context.scale(config.patternScaleX, config.patternScaleY);
+              context.fillStyle = pattern;
+              context.fillRect(
+                0,
+                0,
+                window.innerWidth / config.patternScaleX,
+                window.innerHeight / config.patternScaleY,
+              );
+              context.restore();
+            }
+
+            rafId = requestAnimationFrame(render);
+          }
+
+          resizeCanvas();
+          regenerateTile();
+          render();
+
+          window.addEventListener("resize", resizeCanvas);
+          window.addEventListener("pagehide", () => cancelAnimationFrame(rafId));
+        }
+      }
+
+      const glitchTitle = document.getElementById("glitch-title");
+
+      if (glitchTitle) {
+        if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+          // Respect reduced-motion setting by disabling glitch bursts.
+        } else {
+        let timer = 0;
+        const burst = () => {
+          glitchTitle.classList.add("is-glitch");
+          setTimeout(() => {
+            glitchTitle.classList.remove("is-glitch");
+          }, 210);
+
+          const next = 1100 + Math.random() * 2200;
+          timer = window.setTimeout(burst, next);
+        };
+
+        timer = window.setTimeout(burst, 520);
+        window.addEventListener("pagehide", () => clearTimeout(timer));
+        }
+      }
+
+      const enterLink = document.getElementById("enter-link");
+      let homeWarmupPromise = null;
+
+      function warmupHome() {
+        if (!homeWarmupPromise) {
+          homeWarmupPromise = fetch(
+            enterLink instanceof HTMLAnchorElement ? enterLink.href : homePath,
+            {
+            credentials: "same-origin",
+            cache: "default",
+            },
+          ).catch(() => null);
+        }
+        return homeWarmupPromise;
+      }
+
+      warmupHome();
+
+      if (enterLink instanceof HTMLAnchorElement) {
+        enterLink.addEventListener("mouseenter", warmupHome, { once: true });
+        enterLink.addEventListener("focus", warmupHome, { once: true });
+        enterLink.addEventListener("pointerdown", warmupHome, { once: true });
+      }
+    </script>
+  </body>
+</html>

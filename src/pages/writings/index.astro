@@ -1,0 +1,28 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PostCard from "../../components/PostCard.astro";
+
+const posts = (await getCollection("journal")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+---
+
+<BaseLayout
+  title="Writings · Amor's Journal"
+  description="关于设计、艺术、哲学与文学的文章归档。"
+>
+  <section class="page-intro">
+    <p class="page-kicker">Archive</p>
+    <h1 class="page-title">Writings</h1>
+    <p class="page-desc">
+      共 {posts.length} 篇文章，按时间倒序展示。
+    </p>
+  </section>
+
+  <section class="feed">
+    {posts.map((post) => (
+      <PostCard post={post} />
+    ))}
+  </section>
+</BaseLayout>

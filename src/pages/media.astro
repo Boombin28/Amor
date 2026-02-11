@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => `${base}${path.replace(/^\//, "")}`;
+---
+
+<BaseLayout title="Media · Amor's Journal" description="照片与视频展示区。">
+  <section class="page-intro">
+    <p class="page-kicker">Media</p>
+    <h1 class="page-title">Photos & Video</h1>
+    <p class="page-desc">这一页用于展示照片和视频，后续可无缝切换到 Cloudflare 托管。</p>
+  </section>
+
+  <section class="media-grid">
+    <figure class="media-item">
+      <img src={withBase("/journal/cover-hand.svg")} alt="封面图一" loading="lazy" />
+      <figcaption>Hand Study</figcaption>
+    </figure>
+    <figure class="media-item">
+      <img src={withBase("/journal/cover-stockholm.svg")} alt="封面图二" loading="lazy" />
+      <figcaption>Stockholm Walk</figcaption>
+    </figure>
+    <figure class="media-item">
+      <img src={withBase("/journal/cover-queenstown.svg")} alt="封面图三" loading="lazy" />
+      <figcaption>Queenstown Lake</figcaption>
+    </figure>
+  </section>
+
+  <section style="margin-top: 1.2rem;">
+    <h2 class="page-title" style="font-size: clamp(1.5rem, 3.3vw, 2rem);">Video</h2>
+    <p>把你的视频文件放到 `public/media/demo-reel.mp4` 后，这个播放器会直接工作。</p>
+    <div class="video-shell">
+      <video controls preload="metadata" poster={withBase("/media/video-poster.svg")}>
+        <source src={withBase("/media/demo-reel.mp4")} type="video/mp4" />
+        你的浏览器暂不支持 HTML5 video。
+      </video>
+      <div class="video-hint">
+        生产环境建议：把视频托管到 Cloudflare Stream，并替换为 Stream 播放地址。
+      </div>
+    </div>
+  </section>
+</BaseLayout>

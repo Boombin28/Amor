@@ -1,0 +1,36 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+
+const posts = (await getCollection("journal")).sort(
+  (a, b) => b.data.date.getTime() - a.data.date.getTime(),
+);
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => `${base}${path.replace(/^\//, "")}`;
+---
+
+<BaseLayout
+  title="Amor's Journal"
+  description="设计、艺术、哲学与文学的个人写作空间。"
+>
+  <section class="profile">
+    <img class="avatar" src={withBase("/avatar.svg")} alt="Amor Avatar" />
+    <h1 class="profile-title">Amor's Journal</h1>
+    <p class="profile-subtitle">Design · Art · Literature · Philosophy</p>
+    <p class="profile-note">
+      记录关于设计、艺术、阅读与生活的长期观察。这个网站会持续更新文章、影像和年度清单。
+    </p>
+    <div class="profile-links">
+      <a href={withBase("/writings")}>All Posts</a>
+      <a href={withBase("/media")}>Media</a>
+      <a href={withBase("/about")}>About Me</a>
+    </div>
+  </section>
+
+  <section class="feed">
+    {posts.map((post) => (
+      <PostCard post={post} />
+    ))}
+  </section>
+</BaseLayout>

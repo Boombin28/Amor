@@ -1,0 +1,32 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+  post: CollectionEntry<"journal">;
+}
+
+const { post } = Astro.props;
+const published = post.data.date.toLocaleDateString("zh-CN", {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+});
+const base = import.meta.env.BASE_URL;
+const withBase = (path: string) => `${base}${path.replace(/^\//, "")}`;
+const toAsset = (path: string) => (path.startsWith("/") ? withBase(path) : path);
+const cover = post.data.cover ?? "/journal/cover-default.svg";
+const postLink = withBase(`/writings/${post.slug}`);
+const metaTail = post.data.location ? ` · ${post.data.location}` : "";
+---
+
+<article class="feed-item">
+  <a class="feed-image" href={postLink}>
+    <img src={toAsset(cover)} alt={post.data.title} loading="lazy" />
+  </a>
+  <p class="feed-meta">{published} · {post.data.readingTime}{metaTail}</p>
+  <h2 class="feed-title">
+    <a href={postLink}>{post.data.title}</a>
+  </h2>
+  <p class="feed-excerpt">{post.data.excerpt}</p>
+  <p class="feed-tags">{post.data.tags.join(" · ")}</p>
+</article>
